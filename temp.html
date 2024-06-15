@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Control Panel</title>
+
+    <style>
+        body{
+            margin-top: 80px;
+            margin-left: 80px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:hover {
+            background-color: #a3a3a3;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #14242c;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #04aa6d;
+        }
+
+        input:checked:hover+.slider {
+            background-color: #148464;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .update {
+            background-color: #02bd79;
+            border: none;
+            border-radius: 20px;
+            color: rgb(255, 255, 255);
+            font-size: x-large;
+            width: 150px;
+            height: 50px;
+            transition: transform 0.1s, background-color 0.3s ease;
+    cursor: pointer; /* Optional: changes the cursor to a pointer to indicate it's clickable */
+}
+
+.update:hover {
+    background-color: #00a165; /* Slightly darker green on hover */
+}
+
+.update:active {
+    background-color: #008a55; /* Even darker green to show it's being pressed */
+    transform: scale(0.95); /* Scales down the button to give a press effect */
+}
+    </style>
+
+</head>
+
+<body>
+    <h1>Motor Toggle</h1>
+
+    <br />
+    <br />
+    <br />
+
+    <label class="switch">
+        <input type="checkbox" onchange="toggleMotor(this)">
+        <span class="slider round"></span>
+    </label>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <button onclick="update()" class="update">Update</button>
+
+    <script>
+
+        function toggleMotor(toggler) {
+            fetch('/toggleMotor?motorState=' + (toggler.checked ? '1' : '0'))
+                .then(response => console.log(response.text()))
+                .catch(error => console.error('Error occured during FETCH API. \n ERROR : ', error));
+        }
+
+
+        function update(){
+            fetch('/update')
+                .then(response => console.log(response.text()))
+                .catch(error => console.error('Error occured during FETCH API. \n ERROR : ', error));
+ 
+        }
+
+    </script>
+</body>
+
+</html>
